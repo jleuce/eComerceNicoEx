@@ -39,7 +39,7 @@ function App() {
   function quitar(producto) {
     const itemsNoEliminar = acumuladorCarrito.filter( elemento => elemento.id != producto.id )
     setAcumuladorCarrito(itemsNoEliminar)
-    console.log("funcion quitar")
+    console.log("funcion quitar algo")
   }
 
  
