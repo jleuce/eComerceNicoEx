@@ -24,7 +24,8 @@ function App() {
   const quitarProductoCarrito = (producto) => 
   {
     const itemsNoEliminar = carrito.filter( elemento => elemento.id != producto.id )
-    setAcumuladorCarrito(itemsNoEliminar)
+    setCarrito(itemsNoEliminar)
+    console.log("ejecute quitar producto carrito")
   }
   const procesoCarrito = {
     carrito,

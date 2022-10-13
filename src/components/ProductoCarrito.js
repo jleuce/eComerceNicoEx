@@ -6,7 +6,7 @@ function ProductoCarrito(props) {
     props.quitarHandler(props.producto);
   }
   return (
-    <div>{props.producto.name}
+    <div>{props.producto.nombre}
     <button className="btn btn-primary" onClick={quitarProducto}>Eliminar</button>
     </div>
   )

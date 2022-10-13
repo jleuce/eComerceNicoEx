@@ -2,6 +2,7 @@ import React from 'react'
 
 import { useEffect, useState } from 'react'
 import CardProduct from './CardProduct'
+import CarritoProductos from './CarritoProductos'
 import { CarritoProvider } from './context/Carrito'
 
 function CardListProducts({productos,funcion}) {
@@ -10,6 +11,8 @@ function CardListProducts({productos,funcion}) {
   //setPersonajesFiltrados( personajes.filter(personaje => personaje.id != personajesElegidos.id))
   
   return (
+    <>
+    <CarritoProductos funcion={funcion}></CarritoProductos>
     <CarritoProvider className="CardList">
       
         {productos.map( producto => (
@@ -21,6 +24,7 @@ function CardListProducts({productos,funcion}) {
           ></CardProduct>
         ))}
     </CarritoProvider>
+    </>
   )
 }
 
