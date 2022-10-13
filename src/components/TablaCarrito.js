@@ -1,8 +1,8 @@
 import React from 'react'
 
 function TablaCarrito(props) {
-  console.log('soy la prop')
-  console.log(props.prop.funcion.carrito)
+  //console.log('soy la prop')
+  //console.log(props.prop.funcion.carrito)
     return (
     <div>TablaCarrito
         <div className="overflow-x-auto w-full">

@@ -24,6 +24,48 @@ const traerPersonajes = () => {
             throw err;
         })
     }
+//backend nico
+    const traerPedidos = () => {
+        return fetch(`${API_URL}/pedidos`)
+            .then(fetchErrorHandle)
+            .then(response => response.json())
+            .then(responseObject => responseObject.pedidos);
+    }
+    
+    const traerPedido = (idPedido) =>{
+        return fetch(`${API_URL}/pedidos/${idPedido}`)
+            .then(fetchErrorHandle)
+            .then(response => response.json())
+            .then(responseObject => responseObject.pedido);
+    }
+    
+    const crearPedido = (datosPedido) =>{
+        return fetch(
+            `${API_URL}/pedidos`,
+            {
+                    method: "POST",
+                    mode: 'cors',
+                    cache: 'no-cache',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(datosPedido)
+                }
+            )
+            .then(fetchErrorHandle)
+            .then(response => response.json())
+            .then(responseObject => responseObject.pedido)
+            .catch(err => {
+                console.log("Ocurrio un error al crear pedido", err?.data);
+                throw err;
+            });
+    }
+
+    const procesoBackEnd = {
+        traerPedidos,
+        traerPedido,
+        crearPedido,
+    }
 
 function BackEndNico(props) {
 
@@ -41,6 +83,7 @@ function BackEndNico(props) {
 
   return (
       <CardListProducts
+      procesoBackEnd={procesoBackEnd}
       productos={productos}
       funcion={props}
       > 
