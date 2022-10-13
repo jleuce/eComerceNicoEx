@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/eComerceNicoEx/static/css/main.659b39dd.css",
+    "main.js": "/eComerceNicoEx/static/js/main.f4e5d2c0.js",
+    "static/js/787.0a8d962d.chunk.js": "/eComerceNicoEx/static/js/787.0a8d962d.chunk.js",
+    "index.html": "/eComerceNicoEx/index.html",
+    "main.659b39dd.css.map": "/eComerceNicoEx/static/css/main.659b39dd.css.map",
+    "main.f4e5d2c0.js.map": "/eComerceNicoEx/static/js/main.f4e5d2c0.js.map",
+    "787.0a8d962d.chunk.js.map": "/eComerceNicoEx/static/js/787.0a8d962d.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.659b39dd.css",
+    "static/js/main.f4e5d2c0.js"
+  ]
+}
