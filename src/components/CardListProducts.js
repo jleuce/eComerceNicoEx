@@ -13,7 +13,7 @@ function CardListProducts({productos,funcion}) {
   return (
     <>
     <CarritoProductos funcion={funcion}></CarritoProductos>
-    <CarritoProvider className="CardList">
+    <div className="CardList">
       
         {productos.map( producto => (
           <CardProduct
@@ -23,7 +23,7 @@ function CardListProducts({productos,funcion}) {
             funcion={funcion}
           ></CardProduct>
         ))}
-    </CarritoProvider>
+    </div>
     </>
   )
 }
