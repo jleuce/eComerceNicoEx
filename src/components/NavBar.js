@@ -11,10 +11,11 @@ function NavBar() {
       </button>
     </div>
     <div className="flex-1">
-      <a className="btn btn-ghost normal-case text-xl">daisyUI</a>
-       <Link to='/ram' className="btn btn-square"> Ir a Productos </Link>
-       <Link to='/carrito' className="btn btn-square"> Ir a Carrito </Link>
-       <Link to='/nico' className='btn btn-square'>Ver productos</Link>  
+      <a className="btn btn-ghost normal-case text-xl">Ecomerce JL</a>
+       <Link to='/ram' className="btn btn-outline"> Ir a Productos </Link>
+       <Link to='/carrito' className="btn btn-outline"> Ir a Carrito </Link>
+       <Link to='/nico' className='btn btn-outline'>Ver productos</Link>
+       <Link to='/ConsultaPedidos' className='btn btn-outline'> Ver pedidos</Link>
     </div>
     <div className="flex-none">
       <button className="btn btn-square btn-ghost">

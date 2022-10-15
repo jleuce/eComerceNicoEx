@@ -9,6 +9,8 @@ import Detalle from './components/Detalle';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import BackEndNico from './components/apis/BackEndNico';
 import { carritoGlobal } from './components/context/Carrito';
+import ConsultaPedidos from './components/ConsultaPedidos';
+import DetallePedido from './components/DetallePedido';
 function App() {
 
   const [acumuladorCarrito, setAcumuladorCarrito] = useState([])
@@ -50,12 +52,14 @@ function App() {
     <BrowserRouter>
     <NavBar/>
     <Routes>
-    <Route path='/' element={<Home/>}/>
+    <Route path={'/'} element={<Home/>}/>
     <Route path={'/nico'} element={<BackEndNico funcion={procesoCarrito}/>}/>  
     <Route path={'/hola'} element={<Test01/>}/>  
     <Route path={'/carrito'} element={<Carrito acumulador={acumuladorCarrito} quitarHandler={quitar}/>}/>
     <Route path={'/ram'} element={ <RickMortyAPI agregarCarritoHandler={agregarItemCarrito} acumulador={acumuladorCarrito}></RickMortyAPI>}/>
     <Route path={'/Detalle/:id'} element={<Detalle></Detalle> }></Route>
+    <Route path={'/ConsultaPedidos'} element={<ConsultaPedidos/>}/>
+    <Route path={'/DetallePedido/:id'} element={<DetallePedido/>}/>
     </Routes>
     </BrowserRouter>
     
