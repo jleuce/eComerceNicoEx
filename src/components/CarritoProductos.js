@@ -17,12 +17,13 @@ function CarritoProductos({funcion,procesoBackEnd}) {
     });
 
   }
-
+  const itemsEnCarrito = funcion.funcion.carrito.length != (0) ? `Items seleccionados: (${funcion.funcion.carrito.length})` : "Esta Vacio" ;
   return (
     <div><div className="collapse">
     <input type="checkbox" className="peer" /> 
     <div className="collapse-title bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content">
       Carrito
+      <p className="btn btn-primary">{ itemsEnCarrito }</p>
     </div> <button className="btn btn-primary" onClick={ejecutarBackEnd}>Comprar</button>
     <div className="collapse-content bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content"> 
       {/*funcion.funcion.carrito.map( producto => <ProductoCarrito key={producto.id} producto={producto} quitarHandler={funcion.funcion.quitarProductoCarrito}></ProductoCarrito>)*/}

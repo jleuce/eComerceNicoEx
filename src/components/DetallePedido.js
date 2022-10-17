@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import Loader from './Loader'
 
 
 function DetallePedido() {
   
   const {id} = useParams ()
-  console.log(id)
-
-  const API_URL = "https://test-backend.xyz"
+    const [cargandoPagina,setCargandoPagina] = useState (false)
+    const API_URL = "https://test-backend.xyz"
 
 /* Ignora esto Falta manejo de errores aca, pero empecemos por lo basico */
 const fetchErrorHandle = (response) => response.status === 200
@@ -26,13 +26,21 @@ const fetchErrorHandle = (response) => response.status === 200
     const [pedido, setPedido] = useState({})
 
     useEffect (() =>{
-
+        setCargandoPagina(false)
         traerPedido(id)
             .then ( p => {
                 setPedido(p)
                 console.log(pedido)
-    })          
+                
+    })
+    .then(() => setTimeout(() => {
+    setCargandoPagina(true)   
+    }, 3000))          
     }, [])
+
+    if (cargandoPagina === false) {
+        return <Loader></Loader>
+    }
 
     return (
     <>

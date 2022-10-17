@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import CardListProducts from '../CardListProducts';
+import Loader from '../Loader';
 
 const API_URL = "https://test-backend.xyz"
 
@@ -70,25 +71,28 @@ const traerPersonajes = () => {
 function BackEndNico(props) {
 
     const [productos, setProductos] = useState([])
-    const [cargandoPersonajes, setCargandoPersonajes] = useState(false)
+    const [cargandoPagina, setCargandoPagina] = useState(false)
 
     useEffect(() =>{
-        setCargandoPersonajes(true);
-
+        setCargandoPagina(false);
         traerPersonajes()
         .then (productos1 => setProductos(productos1))
-            //.then (() => setCargandoPersonajes(false))
+        .then (() => setTimeout(() => setCargandoPagina(true),3000))
             
     },[])
 
+
+    if (cargandoPagina === false) {
+       return <Loader/> }
   return (
+    <>
       <CardListProducts
       procesoBackEnd={procesoBackEnd}
       productos={productos}
       funcion={props}
       > 
     </CardListProducts>
-   
+   </>
   )
 }
 

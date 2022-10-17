@@ -3,7 +3,6 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import CardProduct from './CardProduct'
 import CarritoProductos from './CarritoProductos'
-import { CarritoProvider } from './context/Carrito'
 
 function CardListProducts({productos,funcion,procesoBackEnd}) {
 
