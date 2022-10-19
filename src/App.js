@@ -11,6 +11,7 @@ import BackEndNico from './components/apis/BackEndNico';
 import ConsultaPedidos from './components/ConsultaPedidos';
 import DetallePedido from './components/DetallePedido';
 import Favoritos from './components/Favoritos';
+import Formulario from './components/apis/firebaseExample/Formulario';
 function App() {
 
   const [acumuladorCarrito, setAcumuladorCarrito] = useState([])
@@ -61,7 +62,7 @@ function App() {
     <Route path={'/DetallePedido/:id'} element={<DetallePedido/>}/>
     <Route path={'/Favoritos'} element={<Favoritos/>}/>
     <Route path={'/Test'} element={<Test001/>}/>
-    
+    <Route path={'/Formulario'} element={<Formulario/>}/>
     </Routes>
     </BrowserRouter>
     
