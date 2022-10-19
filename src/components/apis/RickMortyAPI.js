@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import CardList from '../CardList';
+import { FavsProvider } from '../context/FavsContext';
 
 const traerPersonajes = () => {
     const URL = "https://rickandmortyapi.com/api/character";
@@ -34,11 +35,13 @@ function RickMortyAPI(props) {
     
 
   return (
+    <FavsProvider>
     <CardList 
     personajes={personajes} 
     agregarCarritoHandler={props.agregarCarritoHandler}
     personajesElegidos={props.acumulador}
-    ></CardList> 
+    ></CardList>
+    </FavsProvider>
   )
 }
 
