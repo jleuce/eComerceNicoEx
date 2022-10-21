@@ -12,6 +12,7 @@ import ConsultaPedidos from './components/ConsultaPedidos';
 import DetallePedido from './components/DetallePedido';
 import Favoritos from './components/Favoritos';
 import Formulario from './components/apis/firebaseExample/Formulario';
+import Firebase from './proyect/APIs.js/FireBase';
 function App() {
 
   const [acumuladorCarrito, setAcumuladorCarrito] = useState([])
@@ -63,6 +64,7 @@ function App() {
     <Route path={'/Favoritos'} element={<Favoritos/>}/>
     <Route path={'/Test'} element={<Test001/>}/>
     <Route path={'/Formulario'} element={<Formulario/>}/>
+    <Route path={'/FireBase'} element={<Firebase/>}/>
     </Routes>
     </BrowserRouter>
     

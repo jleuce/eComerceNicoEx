@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { collection, doc, getDoc, getDocs, getFirestore, query, where } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc, getDocs, getFirestore, query, updateDoc, where } from 'firebase/firestore';
 
 function Formulario(props) {
+
+    const render = false;
 
     const { register, handleSubmit } = useForm();
     const onSubmit = (data) => {
@@ -56,6 +58,43 @@ function Formulario(props) {
         } )
     }
 
+    // generar pedidos
+
+   
+        const putOrder = () => {
+            const user = {name: "Luis",phone:"123",email:"luis@gmail.com"}
+            const items = ["iphone", "android"]
+
+            const order = {
+                buyer: user,
+                items: [],
+                total:2
+            }
+
+            const db = getFirestore()
+            const ordersCollection = collection( db, "Pedidos")
+            addDoc( ordersCollection, order).then(res => {console.log(res)})
+
+        }
+
+        const updateOrder = () => {
+            const user = {name: "Luis",phone:"123",email:"luis@gmail.com"}
+            const items = ["iphone", "android"]
+
+            const order = {
+                buyer: user,
+                items: [],
+                total:2
+            }
+
+            const db = getFirestore()
+            const ordersCollection = collection( db, "orders")
+            const orderDoc = doc( ordersCollection, "5YzT0ApWBYkPsa9OiYN3")
+            updateDoc(orderDoc, {item: ["hola"]})
+
+        }
+
+    if (render === true){
   return (
 <>
 <form onSubmit={handleSubmit(onSubmit)}>
@@ -74,5 +113,14 @@ function Formulario(props) {
 </>
   )
 }
-
+else{
+return(
+<>
+<div>hola</div>
+<button type="button" onClick={putOrder}>crear registro</button>
+<button type="button" onClick={updateOrder}>modificar registro</button>
+</>
+)
+}
+}
 export default Formulario
