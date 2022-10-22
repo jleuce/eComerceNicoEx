@@ -6,7 +6,7 @@ function ProductCard({props,lgCa,lgFa,lgUs,}) {
   const [cantidadStockMuestra, setCantidadStockMuestra] = useState(props.stock)
   
   const sumar = () => {
-    if (cantidadStockMuestra > cantidadSeleccionada){
+    if (props.stock > cantidadSeleccionada){
     setCantidadSeleccionada(cantidadSeleccionada + 1);
     }else{
         alert("no hay mas stock");
@@ -20,7 +20,7 @@ function ProductCard({props,lgCa,lgFa,lgUs,}) {
   }
 
   const agregarAlCarrito = () => {
-    if (cantidadSeleccionada > 0 && cantidadStockMuestra > cantidadSeleccionada){
+    if (cantidadSeleccionada > 0 && props.stock > cantidadSeleccionada){
       //console.log(lgCa)
       lgCa.addCarrito({id:props.id, cant:cantidadSeleccionada})
       setCantidadSeleccionada(0)
@@ -45,7 +45,7 @@ function ProductCard({props,lgCa,lgFa,lgUs,}) {
             </figure>
             <div className="card-body items-center text-center">
                 <h2 className="card-title">{props.producto}</h2>
-                <p>{cantidadStockMuestra}</p>
+                <p>{props.stock}</p>
                 <div className="card-actions">
                     <button className="btn btn-primary" onClick={agregarAlCarrito}>Agregar al carrito</button>
                     <button className="btn btn-primary" onClick={sumar} >+</button>

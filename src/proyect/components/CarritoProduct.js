@@ -8,13 +8,15 @@ function CarritoProduct({props,lgCa}) {
   const restar = () => {
     lgCa.resCantCarrito(props.id,props.cant)
   }
+  const quitar = () => {
+    lgCa.quitCarrito(props.id,props.cant)
+  }
 
   return (
     <>
     <div>{props.id}</div>
     <div>{props.cant}</div>
-    <button onClick={sumar}>+</button>
-    <button onClick={restar}>-</button>
+    <button className="btn btn-primary" onClick={quitar}>Eliminar del carrito</button>
     </>
     
   )

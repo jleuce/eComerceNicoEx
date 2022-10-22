@@ -108,15 +108,22 @@ function Home({logPed,logPro,logUsu}) {
         }
     //funcion actualizar stock del producto en pedido
         const updateStockProducto = (idProducto, nuevoStock) => {
+            console.log("ejecutando updateStockProducto")
+            console.log(idProducto)
+            console.log(nuevoStock)
             const db = getFirestore()
             const ordersCollection = collection( db, "Items")
             const orderDoc = doc( ordersCollection, idProducto)
                 updateDoc(orderDoc, {stock: parseInt(nuevoStock)})
+                console.log("producto actualizado")
         }
     //PEDIDOS
     //funcion generar pedido y vincularlo al usuario
         const generarPedidoUsuario = (pedido,usuario) => {
             console.log("generar pedido usuario")
+
+            //const nuevoStock = productos.find(pr => pr.id == pe.id)- pe.cant;
+
             const order = {
                 usuario: usuario,
                 // productos va a ser un array de objetos que va a tener el id del producto, cantidad seleccionada y precio al momento
@@ -128,6 +135,12 @@ function Home({logPed,logPro,logUsu}) {
             const ordersCollection = collection( db, "Pedidos")
             addDoc( ordersCollection, order).then(res => {console.log(res)})
             console.log("pedido generado")
+            pedido.forEach( function(pe) {
+                const idProducto = pe.id;
+                const nuevoStock = productos.find(pr => pr.id == pe.id).stock;
+                updateStockProducto(idProducto, nuevoStock);
+                })
+
         }
     //funcion traer pedidos
         const traerPedidos = () => {
@@ -170,22 +183,49 @@ function Home({logPed,logPro,logUsu}) {
     // Logica carrito
     //Hooks carrito =[{id producto, cantidad seleccionada y precio}]
     const [carrito, setCarrito] = useState([]);
-    //Hook gestion interna entre carrito y productos
-    const [productosInternos,setProductosInternos] = useState([]);
     // aca tengo que poner objetos con id,cant
     //function agregar al carrito
         const addCarrito = (loteCarrito) => {
+            console.log(carrito.find(p => p.id === loteCarrito.id))
+            if((carrito.find(p => p.id === loteCarrito.id)) == undefined){
             setCarrito([...carrito,loteCarrito])
+            const productoEditado = productos.find(p => p.id === loteCarrito.id)
+            productoEditado.stock -= loteCarrito.cant
+            const newProductos = productos.filter(p => p.id != loteCarrito.id)
+            setProductos([...newProductos,productoEditado])
             console.log(`agregaste al carrito: ${loteCarrito}`)
+            }else{
+                const eCarritoEditado = carrito.find(p => p.id === loteCarrito.id)
+                eCarritoEditado.cant += loteCarrito.cant
+                const newECarrito = carrito.filter(p => p.id != loteCarrito.id)
+                setCarrito([...newECarrito,eCarritoEditado])
+
+                const productoEditado = productos.find(p => p.id === loteCarrito.id)
+                productoEditado.stock -= loteCarrito.cant
+                const newProductos = productos.filter(p => p.id != loteCarrito.id)
+                setProductos([...newProductos,productoEditado])
+                console.log(`agregaste al carrito:`)  
+                console.log(loteCarrito)
+                console.log(`carrito:`)
+                console.log(carrito)
+            }
+
         }
         //function eliminar producto del carrito
-        const quitCarrito = (idProductoEnCarrito) => {
+        const quitCarrito = (idProductoEnCarrito,cant) => {
+            const productoEditado = productos.find(p => p.id === idProductoEnCarrito)
+            productoEditado.stock += cant
+            const newProductos = productos.filter(p => p.id != idProductoEnCarrito)
+            setProductos([...newProductos,productoEditado])
+
             const newCarrito = carrito.filter( e => e.id != idProductoEnCarrito )
             setCarrito(newCarrito)
+
         }
         //function borrar todo del carrito
         const limpiarCarrito = () => {
             setCarrito([])
+            traerProductos()
         }
         //function agregar cantidad a un producto del carrito
         const addCantCarrito = (idProductoEnCarrito, cantidad) => {
