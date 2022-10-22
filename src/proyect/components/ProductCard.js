@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 
-function ProductCard({props}) {
-  console.log("ProductCard")
-  console.log(props)
+function ProductCard({props,lgCa}) {
   const [cantidadSeleccionada, setCantidadSeleccionada] = useState(0)
+  const [cantidadStockMuestra, setCantidadStockMuestra] = useState(props.stock)
   
   const sumar = () => {
-    if (parseInt(props.stock) > cantidadSeleccionada){
+    if (cantidadStockMuestra > cantidadSeleccionada){
     setCantidadSeleccionada(cantidadSeleccionada + 1);
     }else{
         alert("no hay mas stock");
@@ -17,7 +16,14 @@ function ProductCard({props}) {
     setCantidadSeleccionada(cantidadSeleccionada - 1);
     }
   }
-  
+  const agregarAlCarrito = () => {
+    if (cantidadSeleccionada > 0 && cantidadStockMuestra > cantidadSeleccionada){
+      //console.log(lgCa)
+      lgCa.addCarrito({id:props.id, cant:cantidadSeleccionada})
+      setCantidadSeleccionada(0)
+      setCantidadStockMuestra(cantidadStockMuestra-cantidadSeleccionada)
+    }
+  }
   return (
   <div>
   {
@@ -29,9 +35,9 @@ function ProductCard({props}) {
             </figure>
             <div className="card-body items-center text-center">
                 <h2 className="card-title">{props.producto}</h2>
-                <p>{props.stock}</p>
+                <p>{cantidadStockMuestra}</p>
                 <div className="card-actions">
-                    <button className="btn btn-primary" >Agregar al carrito</button>
+                    <button className="btn btn-primary" onClick={agregarAlCarrito}>Agregar al carrito</button>
                     <button className="btn btn-primary" onClick={sumar} >+</button>
                     <button className="btn btn-primary" onClick={restar}>-</button>
                 </div>

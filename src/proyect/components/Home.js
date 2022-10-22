@@ -73,7 +73,6 @@ function Home({logPed,logPro,logUsu}) {
             getDocs(colRef).then( res => {
                 const data = res.docs.map( e => ({id: e.id, ...e.data()}))
                 setProductos(data)
-                console.log(productos)
         } )
         .then(() => setLoadingProductos(false))
         }
@@ -132,15 +131,18 @@ function Home({logPed,logPro,logUsu}) {
     };
     
     // Logica carrito
-        //Hooks carrito =[{id producto, cantidad seleccionada y precio}]
-        const [carrito, setCarrito] = useState([]);
-        //function agregar al carrito
-        const addCarrito = (loteCarrito) => {
+    //Hooks carrito =[{id producto, cantidad seleccionada y precio}]
+    const [carrito, setCarrito] = useState([]);
+    // aca tengo que poner objetos con id,cant
+    //function agregar al carrito
+    const addCarrito = (loteCarrito) => {
             setCarrito([...carrito,loteCarrito])
+            console.log(`agregaste al carrito: ${loteCarrito}`)
+            console.log({carrito})
         }
         //function eliminar producto del carrito
         const quitCarrito = (idProductoEnCarrito) => {
-            const newCarrito = carrito.filter( e => e != idProductoEnCarrito )
+            const newCarrito = carrito.filter( e => e.id != idProductoEnCarrito )
             setCarrito(newCarrito)
         }
         //function borrar todo del carrito
@@ -149,11 +151,13 @@ function Home({logPed,logPro,logUsu}) {
         }
         //function agregar cantidad a un producto del carrito
         const addCantCarrito = (idProductoEnCarrito, cantidad) => {
-            const cantidadStock = logPro.prodcutos.stock
+            console.log("ejecutar addCantCarrito")
+            const producto = logicaProductos.productos.find(e => e.id == idProductoEnCarrito)
+            const cantidadStock = producto.stock
             if (cantidad <= cantidadStock){
                 const elementoEnCarrito = {...(carrito.find(e => e.id == idProductoEnCarrito))}
-                elementoEnCarrito.cantidadSeleccionada = cantidad
-                const newCarrito = carrito.filter( e => e != idProductoEnCarrito )
+                elementoEnCarrito.cant += cantidad
+                const newCarrito = carrito.filter( e => e.id != idProductoEnCarrito )
                 setCarrito ([...newCarrito,elementoEnCarrito])
             }else{
                 console.log("estas queriendo agregar mas que el disponible")
@@ -161,23 +165,31 @@ function Home({logPed,logPro,logUsu}) {
         }
         //function restar cantidad a un producto del carrito
         const resCantCarrito = (idProductoEnCarrito, cantidad) => {
+            console.log("ejecutar resCantCarrito")
+            const elementoEnCarrito = {...(carrito.find(e => e.id == idProductoEnCarrito))}
+            elementoEnCarrito.cantidadSeleccionada -= cantidad
             if (cantidad != 0){
-                const elementoEnCarrito = {...(carrito.find(e => e.id == idProductoEnCarrito))}
-                elementoEnCarrito.cantidadSeleccionada = cantidad
-                const newCarrito = carrito.filter( e => e != idProductoEnCarrito )
+                const newCarrito = carrito.filter( e => e.id != idProductoEnCarrito )
                 setCarrito ([...newCarrito,elementoEnCarrito])
             }else{
                 quitCarrito(idProductoEnCarrito)
             }
         }
         //Objeto para pasar props de logica carrito
-        const logicaCarrito = {}
+        const logicaCarrito = {
+            carrito,
+            addCarrito,
+            quitCarrito,
+            addCantCarrito,
+            resCantCarrito,
+            limpiarCarrito,
+        }
   return (
     <div>
         <BrowserRouter>
         <NavBar props={logicaUsuario}></NavBar>
         <Routes>
-        <Route path={'/productos'} element={<ProductsList props={logicaProductos}/>}/>
+        <Route path={'/productos'} element={<ProductsList lgPr={logicaProductos} lgCa={logicaCarrito}/>}/>
         <Route path={'/productos/detalle/:id'} element={<ProductDetail/> }></Route>
         <Route path={'/pedidos'} element={<Pedidos/>}></Route>
         <Route path={'/pedidos/detalle/:id'} element={<PedidosDetail/>}></Route>
