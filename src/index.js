@@ -7,6 +7,7 @@ import reportWebVitals from './reportWebVitals';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import Home from './proyect/components/Home';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -29,7 +30,8 @@ const analytics = getAnalytics(app);
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    {/*<App />*/}
+    <Home/>
   </React.StrictMode>
 );
 
