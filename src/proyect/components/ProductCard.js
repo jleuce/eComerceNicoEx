@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom';
 
-function ProductCard({props,lgCa}) {
+function ProductCard({props,lgCa,lgFa,lgUs,}) {
   const [cantidadSeleccionada, setCantidadSeleccionada] = useState(0)
   const [cantidadStockMuestra, setCantidadStockMuestra] = useState(props.stock)
   
@@ -11,11 +12,13 @@ function ProductCard({props,lgCa}) {
         alert("no hay mas stock");
     }
   }
+
   const restar = () => {
     if (cantidadSeleccionada > 0){
     setCantidadSeleccionada(cantidadSeleccionada - 1);
     }
   }
+
   const agregarAlCarrito = () => {
     if (cantidadSeleccionada > 0 && cantidadStockMuestra > cantidadSeleccionada){
       //console.log(lgCa)
@@ -24,6 +27,13 @@ function ProductCard({props,lgCa}) {
       setCantidadStockMuestra(cantidadStockMuestra-cantidadSeleccionada)
     }
   }
+
+  const agregarAFavoritos = () => {
+    //console.log(props.id)
+    //console.log(lgUs.usuarioLogeado)
+    lgFa.agregarFavorito(props.id, lgUs.usuarioLogeado)
+  }
+
   return (
   <div>
   {
@@ -48,7 +58,7 @@ function ProductCard({props,lgCa}) {
                 <p type="text">{cantidadSeleccionada}</p>
                 </div>
                 <div className="card-actions">
-                    <button className="btn btn-primary" >Agregar a favoritos o quitar si esta solo logueado</button>
+                    {lgUs.loginOk?<button className="btn btn-primary" onClick={agregarAFavoritos} >Agregar a favoritos</button>:<Link to='/Login' button className="btn btn-primary">Loguearse para agregar a favoritos</Link>}
                 </div>
                 <div className="card-actions">
                     <button className="btn btn-primary" >Ver detalle</button>

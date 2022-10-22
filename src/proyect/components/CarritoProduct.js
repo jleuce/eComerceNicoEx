@@ -1,11 +1,12 @@
 import React from 'react'
 
 function CarritoProduct({props,lgCa}) {
+  console.log(props)
   const sumar = () => {
-    lgCa.addCantCarrito(props.id,(1))
+    lgCa.addCantCarrito(props.id,props.cant)
   }
   const restar = () => {
-    lgCa.resCantCarrito(props.id,(1))
+    lgCa.resCantCarrito(props.id,props.cant)
   }
 
   return (

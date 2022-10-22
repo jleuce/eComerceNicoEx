@@ -21,12 +21,14 @@ function Home({logPed,logPro,logUsu}) {
     const [productos, setProductos] = useState ([]);
     //Hook para guardar los pedidos
     const [pedidos, setPedidos] = useState ([]);
+    //Hooks favoritos
+    const [favoritos, setFavoritos] = useState ([]);
     //Hooks Loadings consultas que traen informacion
     const [loadingProductos, setLoadingProductos] = useState (true);
     const [loadingPedidos, setLoadingPedidos] = useState (true);
-    
+    const [loadingFavoritos, setLoadingFavoritos] = useState (true);
 
-    //LOGIN
+    //Logica usuario
     // funcion verifica si existe el usuario cargado en el formulario
         const existeUsuario = (usuario,contraseña) => {
             console.log("ejecutando funcion existe usuario");
@@ -64,6 +66,34 @@ function Home({logPed,logPro,logUsu}) {
             setUsuarioLogeado("Invitado");
             setLoginOk(false);
         }
+    //Logica favoritos
+    //funcion agregar favorito
+        const agregarFavorito = (idProducto,usuario) => {
+            const favorito = {
+                usuario: usuario,
+                id: idProducto,
+            }
+            const db = getFirestore()
+            const ordersCollection = collection( db, "Favoritos")
+            addDoc(ordersCollection, favorito).then(res => {console.log(res)})
+            console.log(`agregue a favoritos${favorito}`)
+        }
+    //funcion quitar favorito
+
+    //funcion traer favoritos
+    
+        const traerFavoritosDeUsuario = (usuario) => {
+            console.log("trayendo favoritos")
+            setLoadingFavoritos(true);
+            const db = getFirestore()
+            const colRef = collection(db, 'Favoritos')
+            const q = query(colRef,where('usuario','==',usuario))
+            getDocs(q).then( res => {
+                const data = res.docs.map( e => ({id: e.id, ...e.data()}))
+                setFavoritos(data)
+    } )
+    .then(() => setLoadingFavoritos(false))
+    }
     //PRODUCTOS
     //funcion traer productos
         const traerProductos = () => {
@@ -86,17 +116,18 @@ function Home({logPed,logPro,logUsu}) {
     //PEDIDOS
     //funcion generar pedido y vincularlo al usuario
         const generarPedidoUsuario = (pedido,usuario) => {
+            console.log("generar pedido usuario")
             const order = {
                 usuario: usuario,
                 // productos va a ser un array de objetos que va a tener el id del producto, cantidad seleccionada y precio al momento
-                productos: pedido.productos,
-                totalProductos:pedido.productos.length,
+                productos: pedido,
+                totalProductos:pedido.length,
                 fechaPedido: (new Date()).toISOString().split('T')[0]
             }
-
             const db = getFirestore()
             const ordersCollection = collection( db, "Pedidos")
             addDoc( ordersCollection, order).then(res => {console.log(res)})
+            console.log("pedido generado")
         }
     //funcion traer pedidos
         const traerPedidos = () => {
@@ -129,16 +160,23 @@ function Home({logPed,logPro,logUsu}) {
         pedidos, // fechaPedido, productos: [{}], totalProductos, usuario
         loadingPedidos,
     };
+    const logicaFavoritos = {
+        agregarFavorito,
+        traerFavoritosDeUsuario,
+        favoritos,
+        loadingFavoritos,
+    };
     
     // Logica carrito
     //Hooks carrito =[{id producto, cantidad seleccionada y precio}]
     const [carrito, setCarrito] = useState([]);
+    //Hook gestion interna entre carrito y productos
+    const [productosInternos,setProductosInternos] = useState([]);
     // aca tengo que poner objetos con id,cant
     //function agregar al carrito
-    const addCarrito = (loteCarrito) => {
+        const addCarrito = (loteCarrito) => {
             setCarrito([...carrito,loteCarrito])
             console.log(`agregaste al carrito: ${loteCarrito}`)
-            console.log({carrito})
         }
         //function eliminar producto del carrito
         const quitCarrito = (idProductoEnCarrito) => {
@@ -152,16 +190,25 @@ function Home({logPed,logPro,logUsu}) {
         //function agregar cantidad a un producto del carrito
         const addCantCarrito = (idProductoEnCarrito, cantidad) => {
             console.log("ejecutar addCantCarrito")
+            console.log(cantidad)
+
             const producto = logicaProductos.productos.find(e => e.id == idProductoEnCarrito)
             const cantidadStock = producto.stock
             if (cantidad <= cantidadStock){
                 const elementoEnCarrito = {...(carrito.find(e => e.id == idProductoEnCarrito))}
-                elementoEnCarrito.cant += cantidad
+                elementoEnCarrito.cant += 1
                 const newCarrito = carrito.filter( e => e.id != idProductoEnCarrito )
                 setCarrito ([...newCarrito,elementoEnCarrito])
+
+                const newElemento = productos.find(p => p.id === idProductoEnCarrito)
+                newElemento.stock -= cantidad
+                const newProductos = productos.filter(p => p.id != newElemento.id)
+                setProductos([...newProductos,newElemento])
+
             }else{
                 console.log("estas queriendo agregar mas que el disponible")
             }
+            
         }
         //function restar cantidad a un producto del carrito
         const resCantCarrito = (idProductoEnCarrito, cantidad) => {
@@ -189,11 +236,22 @@ function Home({logPed,logPro,logUsu}) {
         <BrowserRouter>
         <NavBar props={logicaUsuario}></NavBar>
         <Routes>
-        <Route path={'/productos'} element={<ProductsList lgPr={logicaProductos} lgCa={logicaCarrito}/>}/>
+        <Route path={'/productos'} element={<ProductsList 
+        lgPr={logicaProductos} 
+        lgCa={logicaCarrito} 
+        lgFa={logicaFavoritos} 
+        lgUs={logicaUsuario}
+        lgPe={logicaPedidos}/>}
+        />
         <Route path={'/productos/detalle/:id'} element={<ProductDetail/> }></Route>
-        <Route path={'/pedidos'} element={<Pedidos/>}></Route>
+        <Route path={'/pedidos'} element={<Pedidos 
+        lgPe={logicaPedidos}
+        />}></Route>
         <Route path={'/pedidos/detalle/:id'} element={<PedidosDetail/>}></Route>
-        <Route path={'/favoritos'} element={<Favoritos/>}></Route>
+        <Route path={'/favoritos'} element={<Favoritos
+        lgFa={logicaFavoritos}
+        lgUs={logicaUsuario}
+        />}></Route>
         <Route path={'/login'} element={<Login props={logicaUsuario}/>}></Route>
         </Routes>
         </BrowserRouter>
