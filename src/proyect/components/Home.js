@@ -291,6 +291,7 @@ function Home({logPed,logPro,logUsu}) {
         <Route path={'/favoritos'} element={<Favoritos
         lgFa={logicaFavoritos}
         lgUs={logicaUsuario}
+        lgPr={logicaProductos}
         />}></Route>
         <Route path={'/login'} element={<Login props={logicaUsuario}/>}></Route>
         </Routes>

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import PedidosTable from './PedidosTable'
 
 function Pedidos({lgPe}) {
 
@@ -13,8 +14,21 @@ function Pedidos({lgPe}) {
   }else{
     return(
     <div>
-    <p>por ahora muestro todos despues los vinculo al usuario</p>
-    {lgPe.pedidos.map( e => <li>{e.fechaPedido}</li>)}
+    <div className="overflow-x-auto">
+    <table className="table w-full">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Fecha</th>
+        <th>Usuario</th>
+        <th>Cantidad Producto</th>
+        <th>ID</th>
+        <th>Ir a detalle</th>
+      </tr>
+    </thead>
+    {lgPe.pedidos.map( e => <PedidosTable lgPe={e}></PedidosTable>)}
+  </table>
+</div>
     </div>
     )
   }
